@@ -1,0 +1,27 @@
+csm-version: '1.0'
+components:
+- uid: cps.tesrvcmd
+  name: cps-tesrvcmd
+  description: CPS TESRVCMD component
+  availability-manager: NONE
+  software:
+    sdp: ERIC-CPS_TESRVCMDBIN-CXC1372166
+  supersedes:
+  - software: ERIC-CPS_TESRVCMDBIN-CXC1372166
+  constraints:
+    installation:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+    upgrade:
+      after:
+      - component: acs.lct.lib
+        method: DIFFERENT-STEP
+  meta-data:
+    component-version: 9.0.0-3
+    deliverable:
+      deployment-package: cps_tesrvcmd-9.0.0-3-deployment-CXC1372166.tar.gz
+      runtime-package: cps_tesrvcmd-9.0.0-3-runtime-CXC1372166.tar.gz
+    software:
+    - file-name: CPS_TESRVCMDBIN-CXC1372166_9-R1A03.x86_64.sdp
+      bundle-name: ERIC-CPS_TESRVCMDBIN-CXC1372166_9-R1A03

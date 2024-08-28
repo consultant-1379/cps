@@ -1,0 +1,38 @@
+[Load]
+Ongoing Load SBCId=0
+Start time for ongoing load - Year=93
+Start time for ongoing load - Month=10
+Start time for ongoing load - Day=10
+Start time for ongoing load - Hours=1
+Start time for ongoing load - Minute=0
+Start time for ongoing load - Second=0
+Start time for ongoing load - Daylight=0
+Start of reload sequence=1
+Last loaded SBC=0
+Last loaded time for fallback - Year=10
+Last loaded time for fallback - Month=8
+Last loaded time for fallback - Day=9
+Last loaded time for fallback - Hours=0
+Last loaded time for fallback - Minute=0
+Last loaded time for fallback - Second=1
+Last loaded time for fallback - Daylight=0
+Ongoing Load=0
+[Dump]
+Ongoing Dump=0
+Start time for ongoing dump - Year=94
+Start time for ongoing dump - Month=11
+Start time for ongoing dump - Day=10
+Start time for ongoing dump - Hours=1
+Start time for ongoing dump - Minute=1
+Start time for ongoing dump - Second=0
+Start time for ongoing dump - Daylight=0
+Ongoing Dump SBCId=0
+[SRM Reload]
+SRM Reload SBC=2
+SRM Reload SBC - Year=0
+SRM Reload SBC - Month=0
+SRM Reload SBC - Day=0
+SRM Reload SBC - Hour=0
+SRM Reload SBC - Minute=0
+SRM Reload SBC - Second=0
+SRM Reload SBC - Daylight=0

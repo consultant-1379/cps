@@ -1,0 +1,4 @@
+T:\Gemini_CPS\tesrv_cnz\tesrv_cxc\bin\tesrvls
+T:\Gemini_CPS\tesrv_cnz\tesrv_cxc\bin\tesrvtran
+T:\Gemini_CPS\tesrv_cnz\tesrv_cxc\packages\rpm\CPS_TESRV-CXC1372068-R1A02.x86_64.rpm 
+

@@ -1,0 +1,88 @@
+# Compiled source #
+###################
+*.obj
+*.d
+*.gcno
+*.o
+
+# Packages #
+############
+*.rpm
+*.sdp
+*.tar.gz
+*.tgz
+*.bin
+*.exe
+*.tar
+*.zip
+*.jar
+*.lib
+*.Lib
+
+#list speicific application binaries
+## buap_cnz
+buap_cnz/buap_cxc/bin/.debug/bupprint_dbg
+buap_cnz/buap_cxc/bin/.debug/bupset_dbg
+buap_cnz/buap_cxc/bin/.debug/cps_buapd_dbg
+buap_cnz/buap_cxc/bin/bupprint
+buap_cnz/buap_cxc/bin/bupset
+buap_cnz/buap_cxc/bin/cps_buapd
+buap_cnz/buap_cxc/bin/t_buap
+buap_cnz/buap_cxc/bin/.debug/libcps_buap.so.2.*
+buap_cnz/buap_cxc/bin/libcps_buap.so.2.*
+
+## buftpd_cnz
+buap_cnz/syslog/
+buap_cnz/buap_test_caa/
+buap_cnz/buapbin_cxc_4/
+buap_cnz/buaplib_CXA/
+buap_cnz/bufilemgr_caa/
+buap_cnz/buparmgr_caa/
+buftpd_cnz/buftpd_cxc/doc/
+buftpd_cnz/buftpd_cxc/bin/cps_buftpd
+buftpd_cnz/buftpd_cxc/bin/cps_buftpd
+buftpd_cnz/buftpd_cxc/bin/.debug/cps_buftpd_dbg
+buftpd_cnz/buftpd_cxc/bin/.debug/cps_buftpd_dbg
+
+## busrv_cnz
+busrv_cnz/busrv_test_caa/
+busrv_cnz/busrv_cxc/doc/
+busrv_cnz/busrv_cxc/bin/bupdef
+busrv_cnz/busrv_cxc/bin/bupidls
+busrv_cnz/busrv_cxc/bin/bupls
+busrv_cnz/busrv_cxc/bin/cps_busrvd
+busrv_cnz/busrv_cxc/bin/.debug/bupdef_dbg
+busrv_cnz/busrv_cxc/bin/.debug/bupidls_dbg
+busrv_cnz/busrv_cxc/bin/.debug/bupls_dbg
+busrv_cnz/busrv_cxc/bin/.debug/cps_busrvd_dbg
+busrv_cnz/busrv_cxc/bin/lib_ext/.debug/libcps_sbc.so.1.*
+busrv_cnz/busrv_cxc/bin/lib_ext/libcps_sbc.so.1.*
+busrv_cnz/busrv_cxc/bin/t_busrv
+busrv_cnz/busrv_adm_caa/buprot/obj/libbuprot.a
+busrv_cnz/busrv_adm_caa/common/obj/libcommon.a
+fcsrv_cnz/fcsrv_adm_caa/common/obj/libcommon.a
+
+## fcsrv_cnz
+fcsrv_cnz/fcsrv_test_caa/
+fcsrv_cnz/fcsrv_cxc/doc/
+fcsrv_cnz/fcsrv_cxc/bin/cps_fcsrvd
+fcsrv_cnz/fcsrv_cxc/bin/.debug/cps_fcsrvd_dbg
+fcsrv_cnz/fcsrv_cxc/bin/t_fcsrv
+fcsrv_cnz/fcsrv_adm_caa/common/obj/libcommon.a
+fcsrv_cnz/fcsrv_adm_caa/fcprot/obj/libfcprot.a
+
+## clogcmd_cnz
+clog_cnz/demo
+clog_cnz/clog_cxc/doc/
+clog_cnz/clog_cxc/bin/cmdlls
+clog_cnz/clog_cxc/bin/.debug/cmdlls_dbg
+
+## tesrv_cnz
+tesrv_cnz/tesrv_cxc/doc/
+tesrv_cnz/tesrv_cxc/bin/tesrvls
+tesrv_cnz/tesrv_cxc/bin/tesrvtran
+tesrv_cnz/tesrv_cxc/bin/.debug/tesrvls_dbg
+tesrv_cnz/tesrv_cxc/bin/.debug/tesrvtran_dbg
+
+### END ### --->
+

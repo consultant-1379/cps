@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 
+  Copyright (c) 2012 Ericsson AB.
+  All rights reserved
+
+  DX ECIM Tool-chain generated this file on Mar 27, 2012 10:39:33 AM using 
+    * coremw.m2m (1.4.4.201109271606)
+    * coremw.m2t (1.4.4.201109271606)
+    * coremw.dsl (1.4.4.201109271606)
+    * coremw.imm (1.4.4.201109271606)
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <class name="CpBackupAndReloadConfig">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>cpBackupAndReloadConfigId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+        <attr>
+            <name>portNumber</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_RUNTIME</category>
+            <flag>SA_PERSISTENT</flag>
+            <default-value>1003</default-value>
+        </attr>
+        <attr>
+            <name>ftpDumpRoot</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+            <flag>SA_PERSISTENT</flag>
+            <default-value>/CPSDUMP/</default-value>
+        </attr>
+        <attr>
+            <name>ftpLoadRoot</name>
+            <type>SA_STRING_T</type>
+            <category>SA_RUNTIME</category>
+            <flag>SA_PERSISTENT</flag>
+            <default-value>/CPSLOAD/</default-value>
+        </attr>
+        <attr>
+            <name>maxNumberOfSimultaneousDump</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_RUNTIME</category>
+            <flag>SA_PERSISTENT</flag>
+            <default-value>4</default-value>
+        </attr>
+        <attr>
+            <name>maxNumberOfSimultaneousLoad</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_RUNTIME</category>
+            <flag>SA_PERSISTENT</flag>
+            <default-value>4</default-value>
+        </attr>
+    </class>
+</imm:IMM-contents>

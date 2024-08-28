@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 8, 2020 11:25:01 PM using:
+	* com.ericsson.ecim.coremw.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.coremw.imm 3.13.0.202006261811
+--><imm:IMM-contents xmlns:imm="http://www.saforum.org/IMMSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.saforum.org/IMMSchema SAI-AIS-IMM-XSD-A.01.01.xsd">
+    <class name="AxeCpReloadCpReloadM">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>AxeCpReloadcpReloadMId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+    </class>
+    <class name="AxeCpReloadDualSidedCp">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>dualSidedCpId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+        <attr>
+            <name>firstFileRange</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>0</default-value>
+        </attr>
+        <attr>
+            <name>secondFileRange</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>0</default-value>
+        </attr>
+        <attr>
+            <name>supervisionTime</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>60</default-value>
+        </attr>
+    </class>
+    <class name="AxeCpReloadCpCluster">
+        <category>SA_CONFIG</category>
+        <rdn>
+            <name>cpClusterId</name>
+            <type>SA_STRING_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_INITIALIZED</flag>
+        </rdn>
+        <attr>
+            <name>firstFileRange</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>0</default-value>
+        </attr>
+        <attr>
+            <name>secondFileRange</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>0</default-value>
+        </attr>
+        <attr>
+            <name>supervisionTime</name>
+            <type>SA_UINT32_T</type>
+            <category>SA_CONFIG</category>
+            <flag>SA_WRITABLE</flag>
+            <default-value>60</default-value>
+        </attr>
+    </class>
+</imm:IMM-contents>

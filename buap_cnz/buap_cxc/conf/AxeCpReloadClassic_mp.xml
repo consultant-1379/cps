@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 8, 2020 11:21:02 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for CP Reload Classic Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>2/19089-CXA 117 0039</docNum>
+            <docLang>Uen</docLang>
+            <docRev>C</docRev>
+            <docDate>2020-12-08</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-08" docNo="2/19089-CXA 117 0039" name="AxeCpReloadClassic" namespace="urn:com:ericsson:ecim:AxeCpReloadClassic" namespacePrefix="axecpreloadclassic" organization="" release="1" revision="C" version="1">
+        <description>CP Backup and Reload Parameters model defines parameters for system backup generation handling and command log handling on all Classic (APZ 212 3x). The parameters are used at reload attempts when the reload is caused by software faults, command initiated reload (SYREI:RANK=RELOAD) and forced executive (FEX) reload. </description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <struct name="StaticParams">
+            <description>This structure contains configurable parameters for setting the command log handling, age restriction for generation file, automatic reload attempts with generation files from first and second file range and time supervision setting.&#13;
+&#13;
+MANUAL COMMAND LOG HANDLING&#13;
+&#13;
+In case of manual command log handling, the first reload attempt, possibly after an unsuccessful reload attempt with the main store dump, is done with the lowest numbered generation file (RELFSW0 in CP file system) and an alarm is given to the operator to read and execute command log manually.&#13;
+&#13;
+All other reloading attempts are made with regard to values of parameters oldestAcceptedDate,includeFirstFileRange and includeSecondFileRange (and supervisionTime). These reloading attempts are done automatically. An alarm is given to the operator to read and execute the command log manually.&#13;
+&#13;
+AUTOMATIC COMMAND LOG HANDLING&#13;
+&#13;
+The first reload attempt, possibly after an unsuccessful reload attempt with the main store dump, is always done with the lowest numbered (which is supposed to be the youngest) generation file (RELFSW0 in CP file system) and the corresponding command log including the entire, latest, command log subfile. This action is done when the&#13;
+command log mode is AUTOMATIC.&#13;
+&#13;
+In case of any two successive reload attempts with less than supervisionTime minutes in between, the parameters given by this command are used by the loader to select the next type of reload attempt. The number of truncation attempts, numberOfTruncationAttempts, and the additional number of commands truncated at each truncation attempt, numberOfTruncationCommands, are used only for their loading attempts with RELFSW0. If parameter numberOfTruncationAttempts has value 0 (no truncation attempts), then the value of parameter numberOfTruncationCommands is not used (unimportant). If, at any truncation attempt, the number of truncated commands is greater than or equal to the number of commands in the latest command log subfile, then the entire latest command log subfile will be omitted. In this case, if the value of parameter logOmissionMode is NONE or EXCLUDE_LAST, it will be counted as NONE. This means that a reload attempt within supervision time (supervisionTime) will use next older generation file. If value of parameter logOmissionMode is ALL, then total omission attempt will be done (see below).&#13;
+&#13;
+If, after numberOfTruncationAttempts truncation attempts, the number of truncated commands was less than the number of commands in the latest command log subfile, then the parameter logOmissionMode will determine whether a total omission attempt will be made (EXCLUDE_LAST, ALL) or not (NONE).&#13;
+&#13;
+If last truncation attempt was with numberOfTruncatedCommands at maximum value, then at subsequent truncation attempts, the numberOfTruncatedCommands maximum value will be repeated up to the numberOfTruncationAttempts value.&#13;
+&#13;
+When loading older generation files (RELFSWj in central processor file store (CP file system), j&gt;0), the corresponding, complete command log is always loaded.&#13;
+&#13;
+AGE RESTRICTION FOR GENERATION FILES&#13;
+&#13;
+The parameter oldestAcceptedDate sets an age limit for the backup generation files that are to be included in the automatic reloading attempts. If a file has a birth date older than the date specified by oldestAcceptedDate, then the file will not be included in the automatic reload attempts and all further reload attempts from that file range will be stopped. This age limitation is valid for files in both first and second file ranges with the exception of RELFSW0, that is even if RELFSW0 is older than oldestAcceptedDate then there will be an automatic reload attempt using RELFSW0.&#13;
+&#13;
+AUTOMATIC RELOAD ATTEMPTS WITH FILES FROM FIRST FILE RANGE&#13;
+&#13;
+If RELFSW0 is specified in parameter includeFirstFileRange, all reloading attempts are made with the lowest numbered generation file. If ANY is specified, all on-line generation files from the first file range that have consecutive numbers can be used for the reloading.&#13;
+&#13;
+AUTOMATIC RELOAD ATTEMPTS WITH FILES FROM SECOND FILE RANGE&#13;
+&#13;
+If parameter includeSecondFileRange is indicated and if all attempts to reload generation files from the first file range, specified in parameter includeFirstFileRange, fail, automatic attempts to reload generation files from the range specified in parameter includeSecondFileRange will be done. If it is specified that reloading attempts shall be made from the second file range, then the automatic reload attempts in the second file range will start from RELFSW100. Automatic reload attempts with files from the second file range will finish with the highest specified file from that range, file RELFSWhhh, where hhh must be a number within a consecutive series of file numbers going from 100 upto 127.&#13;
+&#13;
+TIME SUPERVISION&#13;
+&#13;
+At the start of each reload attempt, a time supervision is started. During the time supervision, any new reloading attempt is made according to the parameters set by the user. If all reloading attempts, selected according to the parameters set by the user, fail, i.e. the time for supervision has not expired at the last possible attempt plus one, then their loading will be done as in preceding attempt. When the time supervision expires, a successful reload attempt is considered to have occurred, meaning that any subsequent reloading attempt will be made from the start of the sequence described above.</description>
+            <structMember name="commandLogMode">
+                <description>Manual or automatic mode command log handling during reloading attempts.</description>
+                <enumRef name="CommandLogModeT">
+                    <defaultValue>MANUAL</defaultValue>
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="includeFirstFileRange">
+                <description>Generation files from the first file range included in the reload attempts.&#13;
+</description>
+                <enumRef name="IncludeFirstFileRangeT">
+                    <defaultValue>RELFSW0</defaultValue>
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="includeSecondFileRange">
+                <description>Highest file number for attempts to reload generation files from second file range. The file number must be within a consecutive series of file numbers going from 100 upto 127. Reload attempts are made from RELFSW100 and upto the given file number. All files are subject to the age limitation imposed by oldestAcceptedDate. If set to zero, no attempt wil be made to reload from the second file range.&#13;
+Number 0, 100 - 127</description>
+                <uint8>
+                    <defaultValue>0</defaultValue>
+                </uint8>
+            </structMember>
+            <structMember name="oldestAcceptedDate">
+                <description>Specifies the oldest accepted birth date for an on-line generation file, from either file range, that may be included in the reload attempts. &#13;
+If a file from a permissible file name sequence to be used in a reload attempt should fall outside the age limit imposed by oldestAcceptedDate, then reloading attempts within that file range will be stopped, even if the next file would be permissible both with regard to name and age.&#13;
+The input date must be of the form YYYY-MM-DD.&#13;
+</description>
+                <derivedDataTypeRef name="Date">
+                    <defaultValue>1990-01-01</defaultValue>
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="logOmissionMode">
+                <description>Log subfile omission attempt with RELFSW0.&#13;
+</description>
+                <enumRef name="LogOmissionModeT">
+                    <defaultValue>NONE</defaultValue>
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="numberOfTruncationAttempts">
+                <description>Specifies the number of attempts to reload RELFSW0 with truncation of the latest command log subfile. Values greater than 2 should be used with caution.&#13;
+Only for automatic command log handling.</description>
+                <derivedDataTypeRef name="NumberOfTruncationT">
+                    <defaultValue>0</defaultValue>
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="numberOfTruncationCommands">
+                <description>Specifies the number of additional commands to be truncated in the latest command log subfile at each attempt to reload RELFSW0. If parameter numberOfTruncationAttemps has value 0, then value of parameter numberOfTruncationCommands doesn't affect reloading attempts.&#13;
+Only for automatic command log handling.</description>
+                <derivedDataTypeRef name="NumberOfTruncationT">
+                    <defaultValue>10</defaultValue>
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="supervisionTime">
+                <description>Specifies time (in minutes) for supervision of reload attempts. The specified value is rounded down to a multiple of ten minutes. Recommended value is 60, do not change this unless there is a strong reason. If the time since last reload attempt exceeds supervisionTime, then the last reload attempt is considered to be successful.</description>
+                <derivedDataTypeRef name="SupervisionTimeT">
+                    <defaultValue>60</defaultValue>
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="LastReload">
+            <description>This is a read only structure containing the values used at reload as well as information about the last automatic reload attempt.</description>
+            <structMember name="commandLogMode">
+                <description>Manual or automatic command log handling during reload attempts.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CommandLogModeT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="generationFileNumber">
+                <description>This value indicates which generation file was loaded e.g. 0 - RELFSW0, 1 - RELFSW1.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="GenerationFileT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="lastPossibleGenerationFile">
+                <description>Indicates whether last possible generation file was loaded.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <boolean/>
+            </structMember>
+            <structMember name="currentTruncatedCommands">
+                <description>Number of commands truncated, at execution of the latest command log subfile, after reload of generation RELFSW0 (only for automatic command log handling).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="NumberOfTruncationT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="supervisionTime">
+                <description>Supervision time value (in minutes) as detailed in the StaticParams description for Time Supervision.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="SupervisionTimeT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="logOmissionSetting">
+                <description>Log subfile omission value for generation 0 (RELFSW0).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="LogOmissionModeT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="logSubfileNoOfLastAutoReload">
+                <description>The numeric reference of the associated command log subfile which is the start subfile in a sequence of logfiles that has been or shall be executed after reload of that system backup copy.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="SubfileNumberT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="programStoreReferenceStoreOutputTime">
+                <description>Output time of the Program Store (PS) and Reference Store (RS) (i.e. subfile R5) in the last reloaded file.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="DateTime">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="dataStoreSmallDumpOutputTime">
+                <description>Output time of the small data dump (subfile R1 or R2) in the last reloaded file.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="DateTime">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="dataStoreLargeDumpOutputTime">
+                <description>Output time of the large data dump (subfile R3 or R4) in the last reloaded file.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="DateTime">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="DynamicParams">
+            <description>This is a read only structure containing the current state of the reload volume and information related to the last reload attempt.</description>
+            <structMember name="loadingState">
+                <description>Internal state of he CP backup function on the AP which is used for calculating the file to reload.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="LoadingStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="currentTruncationAttempt">
+                <description>Current truncation attempt for RELFSW0. When cyclic reloads occur and automatic command log handling has been enabled, the impact can be mitigated by repetitive truncation of the command log (each reload results in additional commands being truncated from the command log).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="NumberOfTruncationT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="currentFileNumberInFFR">
+                <description>Current active file in First File Range (FFR). That is RELFSWj (with j = 0, 1, ...99). RELFSW0 is the system-defined reload file, where the regular system backup copy is located (used for automatic outputs of the small or large data dump and for reload).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="FirstFileRangeT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="currentFileNumberInSFR">
+                <description>Current active file in Second File Range (SFR). That is RELFSWk (with k = 100, 101, ...127). Usage of SFR is optional and is intended to be used when changes in the exchange are not considered to be stable. Consequently when SFR is used the backup generations in the FFR are not considered to be reliable until they have been verified in use.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="SecondFileRangeT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="highestFileNumberInFFR">
+                <description>Highest permissible number of generation file within the age restriction as specified by oldestAcceptedDate, in first file range (FFR). </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="FirstFileRangeT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="highestFileNumberInSFR">
+                <description>Highest permissible number of generation file within the age restriction as specified by oldestAcceptedDate, in second file range (SFR). When 0, no accepted file exists in the second file range.&#13;
+Number 0, 100 - 127</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <uint8/>
+            </structMember>
+            <structMember name="numberOfTruncatedCommands">
+                <description>Number of commands truncated, at execution of the latest command log subfile, after reload of generation RELFSW0 (only for automatic command log handling).</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="NumberOfTruncationT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="lastPermissibleGeneration">
+                <description>Last permissible generation file number in the fallback sequence. Value is only valid if loadingState parameter has the value of LAST_PERMISSIBLE_FILE.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="GenerationFileT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="logOmissionSetting">
+                <description>Command log subfile omission setting for generation 0 (RELFSW0).&#13;
+Only for automatic command log handling.&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="LogOmissionModeT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="expiringTimeSupervision">
+                <description>Expiring Time Supervision&#13;
+(Refer to the description of supervisionTime in StaticParams structure.)&#13;
+YYYY-MM-DD HH:MM</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="DateTime">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <struct name="DelayedMeasures">
+            <description>This is a read only structure containing the configured Delayed Measures that define what happens if the stepping of the command log fails for some reason (for instance the IO is unavailable). Delayed measures are set by events such as small or large data dump, that have occurred when the command log is unavailable.&#13;
+&#13;
+Any issued delayed measure remains until the action initiated by the CP can be completed or is no longer required for some reason. The CP will continue to perform automatic mainstore backups (if such has been configured) as scheduled even when the IO is unavailable.&#13;
+&#13;
+The delayed measures are ordered when the command log becomes available again.</description>
+            <structMember name="preparedCommandLog">
+                <description>Controls if reading and executing the prepared command log can be delayed or not. &#13;
+Specifies the number of the command log subfile from where reading and execution of the command log shall start after a switch-back.&#13;
+This reference is set when the CP sides are for some reason separated without the SB-side being fault marked.&#13;
+The purpose of this subfile is to avoid the loss of logged commands that could arise in case of a side switch during the separation.&#13;
+</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="mainStoreCommandLog">
+                <description>Controls if reading and executing the command log for the Main Store can be delayed or not.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="currentCommandLog">
+                <description>Controls if reading and executing the current command log can be delayed or not.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="mainStoreStepping">
+                <description>Controls if command log stepping at dump to main store can be delayed or not.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="dumpStepping">
+                <description>Controls if command log stepping when creating a dump can be delayed or not.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="preparedStepping">
+                <description>Controls if stepping of the prepared command log can be delayed or not.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="smallBackupArea">
+                <description>Controls if small data dump transfer can be delayed or not.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+            <structMember name="largeBackupArea">
+                <description>Controls if large data dump transfer can be delayed or not.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <enumRef name="CurrentStateT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </enumRef>
+            </structMember>
+        </struct>
+        <struct name="CommandLogReferences">
+            <description>This is a read only structure containing references to the relevant command log subfiles. These values are automatically set and updated by the CP and are thus read only.</description>
+            <structMember name="currentSubfileNumber">
+                <description>This parameter contains the current active command log subfile number and is the subfile that is currently used for logging of commands. This reference is automatically updated after every large data dump, manually incremented using command SYCSI or in connection with setting of preparedCommandLog parameter of DelayedMeasures structure.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="SubfileNumberT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="mainStoreSubfileNumber">
+                <description>When the function Backup in Main Store (BUMS) is used in the CP, this attribute contains the command log subfile from where reading and execution shall start after a reload from the main store. This value is automatically updated after every large data dump provided that the BUMS function is active or manually incremented using command SYCSI.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="SubfileNumberT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+            <structMember name="preparedSubfileNumber">
+                <description>This attribute contains the command log subfile from where reading and execution shall start after a switch-back of the CP sides. This value is automatically updated when the CP sides are for some reason separated without the SB-side being fault marked or manually incremented using command SYCSI. The purpose of this subfile is to avoid the loss of logged commands that could arise in case of a side switch during the separation.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <derivedDataTypeRef name="SubfileNumberT">
+                    <mimName>AxeCpReloadClassic</mimName>
+                </derivedDataTypeRef>
+            </structMember>
+        </struct>
+        <enum name="ValidityT">
+            <description>Enumeration type for Validity</description>
+            <enumMember name="VALID">
+                <value>1</value>
+            </enumMember>
+            <enumMember name="INVALID">
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <enum name="IncludeFirstFileRangeT">
+            <description>Enumeration type for Include First File Range.</description>
+            <enumMember name="RELFSW0">
+                <description>Only the lowest numbered generation file may be included in the reload attempts.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ANY">
+                <description>All on-line generation files with numbers going from 0 upto the highest consecutive number in the first file range (highest possible is 99) may be included in reload attempts. All subject to the age limitation imposed by oldestAcceptedDate.</description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="LogOmissionModeT">
+            <description>Enumeration type for Command Log Omission Mode.</description>
+            <enumMember name="ALL">
+                <description>Attempt to reload RELFSW0 with complete corresponding command log omitted.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="NONE">
+                <description>No omission attempt.</description>
+                <value>0</value>
+            </enumMember>
+            <enumMember name="EXCLUDE_LAST">
+                <description>Attempt to reload RELFSW0 with the last command log subfile omitted. </description>
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="CommandLogModeT">
+            <description>Enumeration type for Command Log Mode.</description>
+            <enumMember name="MANUAL">
+                <description>Manual command log handling during reloading attempts.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="AUTOMATIC">
+                <description>Automatic command log handling during reloading attempts as long as on-line command log subfiles are available.</description>
+                <value>0</value>
+            </enumMember>
+        </enum>
+        <enum name="CurrentStateT">
+            <description>Enumeration type for Current State.</description>
+            <enumMember name="DISABLED">
+                <value>0</value>
+            </enumMember>
+            <enumMember name="ENABLED">
+                <value>1</value>
+            </enumMember>
+        </enum>
+        <enum name="LoadingStateT">
+            <description>Enumeration for Loading State.</description>
+            <enumMember name="INITIAL_STATE">
+                <description>Initial state. 
+Usually after the user changes the reload parameters in the StaticParams structure or supervision time is expired, the dynamic parameters are reset to default value and reload sequence is reset.</description>
+                <value>1</value>
+            </enumMember>
+            <enumMember name="AUTO_CMD_LOG">
+                <description>Load RELFSW0 with auto command log with command truncation if applicable.</description>
+                <value>2</value>
+            </enumMember>
+            <enumMember name="LOG_OMISSION_MODE">
+                <description>Load RELFSW0 with auto command log omit command log (logOmissionMode) if applicable.</description>
+                <value>3</value>
+            </enumMember>
+            <enumMember name="USE_FFR">
+                <description>Load file in FFR.</description>
+                <value>4</value>
+            </enumMember>
+            <enumMember name="USE_SFR">
+                <description>Load file in SFR.</description>
+                <value>5</value>
+            </enumMember>
+            <enumMember name="LAST_PERMISSIBLE_FILE">
+                <description>Load the last permissible file.</description>
+                <value>6</value>
+            </enumMember>
+        </enum>
+        <derivedDataType name="Date">
+            <description>Specifies the date format: YYYY-MM-DD.</description>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>10</min>
+                        <max>10</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>10</min>
+                            <max>10</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="" format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="SupervisionTimeT">
+            <description>Derived numeric for Supervision Time (in minute).</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimRelease" value="0"/>
+                <extension name="originatingMimName" value="AxeCpReload"/>
+            </domainExtension>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>30</min>
+                        <max>2400</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>30</min>
+                            <max>2400</max>
+                        </subrange>
+                    </ranges>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="DateTime">
+            <description>Represents the international standard for the representation of date and time ( ISO 8601).
+The string format is "YYYY-MM-DDThh:mm:ss.SSSZ" (excluding quotes).
+A DateTime string consists of a date part, a time part, and an optional time zone information part. The time zone part may be a "Z", representing the Coordinated Universal Time (UTC) time zone (equals to +00) or a time zone offset (for example, +02:00).
+If the time zone part is not present, the DateTime value represents local time.
+
+The following pattern describes the DateTime format:
+YYYY-MM-DDThh:mm:ss[.S+][Z|+-hh:mm]
+Where:
+YYYY = Four digit year
+MM = Two digit month (01=January, and so on)
+DD = Two digit day of month (01 through 31)
+T = Time designator (shows start of time component)
+hh = Two digits of hour (00 through 23, AM/PM not allowed)
+mm = Two digits of minute (00 through 59)
+ss = Two digits of second (00 through 59, leap second not allowed)
+S+ = One or more digits of decimal fraction of a second
+Z = Time is UTC
++- = + or - character indicating positive or negative offset to UTC
+
+DateTime values are compliant with ISO 8601 "Representation of dates and times" but are restricted according to RFC 3339 "Date and Time on the Internet: Timestamps". The DateTime format is further restricted as follows:
+- T and Z designators are upper case.
+- . (dot) is used to indicate start of fractions of seconds (ISO 8601 also allows comma)</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="2"/>
+                <extension name="originatingMimRelease" value="7"/>
+                <extension name="originatingMimName" value="ECIM_CommonLibrary"/>
+            </domainExtension>
+            <baseType>
+                <string>
+                    <lengthRange>
+                        <min>19</min>
+                        <max>31</max>
+                    </lengthRange>
+                    <stringLength>
+                        <subrange>
+                            <min>19</min>
+                            <max>31</max>
+                        </subrange>
+                    </stringLength>
+                    <validValues>^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z)?)$</validValues>
+                </string>
+            </baseType>
+            <validationRules>
+                <rule exceptionText="Must be of the format YYYY-MM-DDTHH:MM:SS[.S+][Z|+-hh:mm] where T separates the time and the date parts and Z indicates the time zone in relation to UTC. Example 2000-08-01T17:17:34.1+01:00." format="posix_ere" name="Pattern Constraint"><![CDATA[^([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])([\.][0-9]+){0,1}(([\+|\-](0[0-9]|1[0-9]|2[0-4])(:[0-5][0-9])?)|(Z)?)$]]></rule>
+            </validationRules>
+        </derivedDataType>
+        <derivedDataType name="GenerationFileT">
+            <description>Derived numeric data type for Generation File.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>127</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>127</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SubfileNumberT">
+            <description>Derived numeric data type for command log subfile numbers.</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>0</min>
+                        <max>9999999</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>9999999</max>
+                        </subrange>
+                    </ranges>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="NumberOfTruncationT">
+            <description>Specifies Number Of Truncation Commands or Number Of Truncation Attempts.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>255</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>255</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="FirstFileRangeT">
+            <description>Derived numeric data type for First File Range in a Classic CP or Dual Sided CP.</description>
+            <domainExtension domain="ECIM">
+                <extension name="originatingMimVersion" value="1"/>
+                <extension name="originatingMimRelease" value="0"/>
+                <extension name="originatingMimName" value="AxeCpReload"/>
+            </domainExtension>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>99</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>99</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="SecondFileRangeT">
+            <description>Derived numeric data type for Second File Range.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>100</min>
+                        <max>127</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>100</min>
+                            <max>127</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <class name="ClassicCp">
+            <description>Represents the root MOC for CP Reload Management function MOM.
+It allows setting parameters for system backup generation handling and command log handling during CP fallback reload on Classic system (APZ 212 3x). The parameters are used at reload attempts when the reload is caused by software faults, command initiated reload (SYREI:RANK=RELOAD) and forced executive (FEX) reload.&#13;
+&#13;
+The command log handling can be set to automatic or manual via commandLogMode attribute.&#13;
+&#13;
+The attributes that are not specified will not be changed.&#13;
+&#13;
+Note that whenever user changes any parameter in the staticParams attribute of this class instance, all of the parameters in the dynamicParams attribute are automatically calculated by the system.&#13;
+&#13;
+GENERAL RELOADING SEQUENCE&#13;
+&#13;
+0&#13;
+load MS-dump, read associated command log (optional)&#13;
+&#13;
+1&#13;
+load RELFSW0, read associated command log&#13;
+&#13;
+2...n&#13;
+load RELFSW0, read truncated associated command log or omit it completely (as specified by numberOfTruncationAttempts, numberOfTruncationCommands and logOmissionMode)&#13;
+&#13;
+...&#13;
+&#13;
+n+1&#13;
+load RELFSW1, read associated command log&#13;
+&#13;
+n+2&#13;
+load RELFSW2, read associated command log&#13;
+&#13;
+...&#13;
+&#13;
+n+m&#13;
+load RELFSWm (last file from the first file range, as determined by includeFirstFileRange and oldestAcceptedDate), read associated command log&#13;
+&#13;
+n+m+1&#13;
+load RELFSW100 (first file from the second file range, as determined by includeSecondFileRange and oldestAcceptedDate) (optional), read associated command log&#13;
+&#13;
+n+m+2&#13;
+load RELFSW101, read associated command log&#13;
+&#13;
+...&#13;
+&#13;
+n+m+o&#13;
+load RELFSWhhh (last file from the second file range, as determined by includeSecondFileRange and oldestAcceptedDate), read associated command log&#13;
+&#13;
+n+m+o+1&#13;
+return to step 0 after time supervision (as determined by the supervisionTime), else do as in step n+m+o&#13;
+&#13;
+The order remains after system restart and reload.</description>
+            <root/>
+            <action name="resetStaticParams">
+                <description>This action will reset all static parameters to the default values.&#13;
+The default values set are:&#13;
+    includeFirstFileRange = RELFSW0, use only RELFSW0&#13;
+    includeSecondFileRange = 0, use no files from second file range&#13;
+    numberOfTruncationCommands = 10, ten additional commands truncated with each reload attempt.&#13;
+    oldestAcceptedDate = 1990-01-01, all files after January 1st 1990 may be used for reload attempts.&#13;
+    commandLogMode = MANUAL, use manual command log handling&#13;
+    logOmissionMode = NONE, no log subfile omission attempts&#13;
+    supervisionTime = 60, use a supervision time of 60 minutes&#13;
+    numberOfTruncationAttempts = 0, no truncation attempts with RELFSW0</description>
+                <domainExtension domain="CoreMW">
+                    <extension name="admOpId" value="0"/>
+                </domainExtension>
+                <returnType>
+                    <void/>
+                </returnType>
+            </action>
+            <attribute name="classicCpId">
+                <description>Holds the name used when identifying the MO.&#13;
+The value of this attribute is "1".</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="dynamicParams">
+                <description>This structure contains the current state of the reload volume.
+It is a number of RELFSW files and associated subfiles.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="DynamicParams">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="commandLogReferences">
+                <description>Contains references to the relevant command log subfiles.
+They are executed from the APG after a reload/switch-back. These values are automatically set and updated by the CP and are thus read only.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="CommandLogReferences">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="delayedMeasures">
+                <description>Defines what happens if the command log is unavailable for some reasons.
+The enabled delayed measures are automatically ordered when the command log becomes available again.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="DelayedMeasures">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="lastReload">
+                <description>This structure contains the values used and reload details at the time of the last reload attempt.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <structRef name="LastReload">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="staticParams">
+                <description>Contains configurable parameters.
+In particular for command log handling, age restriction for generation file, manual and automatic reload attempts and time supervision setting.</description>
+                <dataType>
+                    <structRef name="StaticParams">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </structRef>
+                </dataType>
+            </attribute>
+            <attribute name="isStaticParamsValid">
+                <description>Indicates if static parameters are valid or not.&#13;
+At the installation or upgrade of the CP backup function on the AP, these Static Parameters are invalid. &#13;
+This attribute will become valid if user changes any parameter in the StaticParams structure.</description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ValidityT">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="isDynamicParamsValid">
+                <description>Indicate Dynamic Parameters are valid or not.&#13;
+At the installation or upgrade of the CP backup function on the AP, these Dynamic Parameters are invalid. &#13;
+This attribute will become valid in one of the following cases:&#13;
+    - User changes any parameter in the StaticParams structure. &#13;
+    - User initiates a reload. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ValidityT">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="isDelayedMeasuresValid">
+                <description>Indicates if delayed measures parameters are valid or not.&#13;
+At the installation or upgrade of the CP backup function on the AP, these Delayed Measures Parameters are invalid. &#13;
+This attribute will become valid if the user initiates a reload. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ValidityT">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="isCommandLogReferencesValid">
+                <description>Indicate Command Log References Parameters are Valid or not.&#13;
+At the installation or upgrade of the CP backup function on the AP, these Command Log References Parameters are invalid. &#13;
+This attribute will become valid if the user initiates a reload. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ValidityT">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+            <attribute name="isLastReloadValid">
+                <description>Indicates if last reload parameters are valid or not.&#13;
+At the installation or upgrade of the CP backup function on the AP, these Last Reload Parameters are invalid. &#13;
+This attribute will become valid if the user initiates a reload. </description>
+                <domainExtension domain="ECIM">
+                    <extension name="isNillable" value="true"/>
+                </domainExtension>
+                <noNotification/>
+                <readOnly/>
+                <isNillable/>
+                <dataType>
+                    <enumRef name="ValidityT">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </enumRef>
+                </dataType>
+            </attribute>
+        </class>
+    </mim>
+    <interMim>
+        <relationship name="CpReloadM_to_ClassicCp">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="CpReloadM">
+                        <mimName>AxeCpReload</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="ClassicCp">
+                        <mimName>AxeCpReloadClassic</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="true"/>
+                    <extension name="canDelete" value="true"/>
+                </domainExtension>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

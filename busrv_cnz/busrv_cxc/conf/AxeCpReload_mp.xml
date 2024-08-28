@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+	Copyright (c) 2020 Ericsson AB.
+	All rights reserved
+
+	DX ECIM Tool-chain generated this file on Dec 8, 2020 11:25:05 PM using:
+	* com.ericsson.ecim.m2m 3.13.0.202006261811
+	* com.ericsson.ecim.dsl 3.13.0.202006261811
+	* com.ericsson.ecim.edm 3.13.0.202006261811
+--><!DOCTYPE models SYSTEM "mp.dtd">
+<models>
+    <dtdVersion>K</dtdVersion>
+    <momMetaData>
+        <momTitle>Managed Object Model for CP Reload Management Function</momTitle>
+        <momSubTitle/>
+        <momIdentity>
+            <docNum>1/19089-CXA 117 0017</docNum>
+            <docLang>Uen</docLang>
+            <docRev>C</docRev>
+            <docDate>2020-12-08</docDate>
+        </momIdentity>
+        <createdBy>
+            <signature>XHARBAV</signature>
+        </createdBy>
+    </momMetaData>
+    <mim author="Harika Bavana" contact="XHARBAV" correction="0" date="2020-12-08" docNo="1/19089-CXA 117 0017" name="AxeCpReload" namespace="urn:com:ericsson:ecim:AxeCpReload" namespacePrefix="axecpreload" organization="" release="1" revision="C" version="1">
+        <description>CP Backup and Reload Parameters model defines parameters for system backup generation handling and command log handling on Non-Classic Dual (APZ 212 40 and later) and Cluster system. The parameters are used at reload attempts when the reload is caused by software faults, command initiated reload (SYREI:RANK=RELOAD) and forced executive (FEX) reload. </description>
+        <domainExtension domain="ECIM">
+            <extension name="immNamespace" value="MOM_NAME"/>
+        </domainExtension>
+        <derivedDataType name="SupervisionTimeT">
+            <description>Derived numeric for Supervision Time (in minute).</description>
+            <baseType>
+                <uint32>
+                    <range>
+                        <min>30</min>
+                        <max>2400</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>30</min>
+                            <max>2400</max>
+                        </subrange>
+                    </ranges>
+                </uint32>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="FirstFileRangeT">
+            <description>Derived numeric data type for First File Range in a Classic CP or Dual Sided CP.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>99</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>99</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <derivedDataType name="FirstFileRangeClusterT">
+            <description>Derived numeric data type for First File Range in CP Cluster system.</description>
+            <baseType>
+                <uint8>
+                    <range>
+                        <min>0</min>
+                        <max>29</max>
+                    </range>
+                    <ranges>
+                        <subrange>
+                            <min>0</min>
+                            <max>29</max>
+                        </subrange>
+                    </ranges>
+                </uint8>
+            </baseType>
+        </derivedDataType>
+        <class name="CpReloadM">
+            <description>This fragment provides all configuration settings applicable to reload handling of the CP. Specific classes are automatically provided by the system matching the APZ type.</description>
+            <systemCreated/>
+            <root/>
+            <attribute name="cpReloadMId">
+                <description>Holds the name used when identifying the MO.
+It is automatically set.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="DualSidedCp">
+            <description>The class DualSidedCp configures the system backup generation handling during CP fallback reload for AXE dual sided systems, from APZ 212 40 and later. The parameters are used at reload attempts when the reload is caused by software faults as well as when the reload is command initiated (that is MML command SYREI:RANK=RELOAD;).&#13;
+&#13;
+When the backup parameters are not defined the default backup parameter values are used. &#13;
+&#13;
+DEFAULT BACKUP PARAMETER VALUES &#13;
+&#13;
+firstFileRange = 0, only RELFSW0 is used from the first file range &#13;
+secondFileRange = 0, no files are used from second file range &#13;
+supervisionTime = 60, supervision time of 60 minutes is used &#13;
+&#13;
+GENERAL RELOADING SEQUENCE &#13;
+&#13;
+Reload attempt 1 &#13;
+&#13;
+load MS-dump &#13;
+&#13;
+Reload attempt 2 &#13;
+&#13;
+load RELFSW0 &#13;
+&#13;
+... &#13;
+&#13;
+Reload attempt x &#13;
+&#13;
+load RELFSWn (last file from the first file range, as determined by firstFileRange) &#13;
+&#13;
+Reload attempt x+1 &#13;
+&#13;
+load RELFSW100 (first file from the second file range, as determined by secondFileRange)&#13;
+&#13;
+... &#13;
+&#13;
+Reload attempt y &#13;
+&#13;
+load RELFSWm (last file from the second file range, as determined by secondFileRange) &#13;
+&#13;
+return to reload attempt 1 after time out (as determined by supervisionTime), else reload the latest reloaded file again &#13;
+&#13;
+TIME SUPERVISION &#13;
+&#13;
+At the start of each reload attempt, a time supervision is started. During the time supervision, any new reloading attempt is made according to the parameters. When the time supervision expires, a successful reload attempt is considered to have occurred, meaning that any subsequent reloading attempt will be made from the start of the sequence described above. &#13;
+&#13;
+When the user change reload parameters during a reload sequence, the reload sequence will return to reload attempt 2. If the change is executed during a reload sequence and at a time out (as determined by supervisionTime), the reload sequence will return to reload attempt 1.&#13;
+&#13;
+The order remains after system restart and reload. &#13;
+&#13;
+</description>
+            <systemCreated/>
+            <attribute name="dualSidedCpId">
+                <description>Holds the name used when identifying the MO.
+It is automatically set.&#13;
+For a Single-CP System, the value of this attribute is "1".&#13;
+For a Multi-CP System, the value of this attribute is "1001" for CP1 and "1002" for CP2.</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="firstFileRange">
+                <description>This attribute defines the highest file number for attempts to reload generation files from first file range. The file number must be within a consecutive series of file numbers going from 0 up to 99. The first file range is not limited to the Cluster backup range. Reload attempts are made from RELFSW0 and up to the given file number.</description>
+                <dataType>
+                    <derivedDataTypeRef name="FirstFileRangeT">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeCpReload</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="secondFileRange">
+                <description>This attribute defines the highest file number for attempts to reload generation files from second file range. The file number must be within a consecutive series of file numbers going from 100 up to 127. Reload attempts are made from RELFSW100 and up to the given file number. If defined to zero, no attempt will be made to reload from the second file range.&#13;
+Numeral 0, 100 - 127 </description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="supervisionTime">
+                <description>This attribute defines the time (in minutes) for supervision of reload attempts.&#13;
+Recommended value is 60. If the time since last reload attempt exceeds supervision time, then the last reload attempt is considered to be successful.</description>
+                <dataType>
+                    <derivedDataTypeRef name="SupervisionTimeT">
+                        <defaultValue>60</defaultValue>
+                        <mimName>AxeCpReload</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <class name="CpCluster">
+            <description>The class CpCluster defines parameters for system backup generation handling during CP fallback reload on CP Cluster system. The parameters are used at reload attempts when the reload is caused by software faults and command initiated reload (SYREI:RANK=RELOAD). &#13;
+&#13;
+When the backup parameters are not defined the default backup parameter values are used. &#13;
+&#13;
+DEFAULT BACKUP PARAMETER VALUES &#13;
+&#13;
+firstFileRange = 0, only RELFSW0 is used from the first file range &#13;
+secondFileRange = 0, no files are used from second file range &#13;
+supervisionTime = 60, supervision time of 60 minutes is used &#13;
+&#13;
+GENERAL RELOADING SEQUENCE &#13;
+&#13;
+Reload attempt 1 &#13;
+&#13;
+load MS-dump &#13;
+&#13;
+Reload attempt 2 &#13;
+&#13;
+load RELFSW0 &#13;
+&#13;
+... &#13;
+&#13;
+Reload attempt x &#13;
+&#13;
+load RELFSWn (last file from the first file range, as determined by firstFileRange) &#13;
+&#13;
+Reload attempt x+1 &#13;
+&#13;
+load RELFSW100 (first file from the second file range, as determined by secondFileRange) &#13;
+&#13;
+... &#13;
+&#13;
+Reload attempt y &#13;
+&#13;
+load RELFSWm (last file from the second file range, as determined by secondFileRange) &#13;
+&#13;
+return to reload attempt 1 after time out (as determined by supervisionTime), else reload the latest reloaded file again &#13;
+&#13;
+TIME SUPERVISION &#13;
+&#13;
+At the start of each reload attempt, a time supervision is started. During the time supervision, any new reloading attempt is made according to the parameters defined by the user. When the time supervision expires, a successful reload attempt is considered to have occurred, meaning that any subsequent reloading attempt will be made from the start of the sequence described above. &#13;
+&#13;
+When the user change reload parameters during a reload sequence, the reload sequence will return to reload attempt 2. If the change executed during a reload sequence and at a time out (as determined by supervisionTime), the reload sequence will return to reload attempt 1. &#13;
+&#13;
+The order remains after system restart and reload. &#13;
+&#13;
+</description>
+            <systemCreated/>
+            <attribute name="cpClusterId">
+                <description>Holds the name used when identifying the MO.
+It is automatically set to "1".</description>
+                <mandatory/>
+                <noNotification/>
+                <restricted/>
+                <key/>
+                <dataType>
+                    <string/>
+                </dataType>
+            </attribute>
+            <attribute name="firstFileRange">
+                <description>This attribute defines the highest file number for attempts to reload generation files from first file range. The file number must be within a consecutive series of file numbers going from 0 up to 29. The first file range is not limited to the Cluster backup range. Reload attempts are made from RELFSW0 and up to the given file number.</description>
+                <dataType>
+                    <derivedDataTypeRef name="FirstFileRangeClusterT">
+                        <defaultValue>0</defaultValue>
+                        <mimName>AxeCpReload</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+            <attribute name="secondFileRange">
+                <description>This attribute defines the highest file number for attempts to reload generation files from second file range. The file number must be within a consecutive series of file numbers going from 100 up to 127. Reload attempts are made from RELFSW100 and up to the given file number. If defined to zero, no attempt will be made to reload from the second file range.&#13;
+Numeral 0, 100 - 127 </description>
+                <dataType>
+                    <uint8>
+                        <defaultValue>0</defaultValue>
+                    </uint8>
+                </dataType>
+            </attribute>
+            <attribute name="supervisionTime">
+                <description>This attribute defines the time (in minutes) for supervision of reload attempts.&#13;
+Recommended value is 60. If the time since last reload attempt exceeds supervision time, then the last reload attempt is considered to be successful.</description>
+                <dataType>
+                    <derivedDataTypeRef name="SupervisionTimeT">
+                        <defaultValue>60</defaultValue>
+                        <mimName>AxeCpReload</mimName>
+                    </derivedDataTypeRef>
+                </dataType>
+            </attribute>
+        </class>
+        <relationship name="CpReloadM_to_CpCluster">
+            <containment>
+                <parent>
+                    <hasClass name="CpReloadM">
+                        <mimName>AxeCpReload</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CpCluster">
+                        <mimName>AxeCpReload</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+        <relationship name="CpReloadM_to_DualSidedCp">
+            <containment>
+                <parent>
+                    <hasClass name="CpReloadM">
+                        <mimName>AxeCpReload</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="DualSidedCp">
+                        <mimName>AxeCpReload</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>0</min>
+                        <max>2</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </mim>
+    <interMim>
+        <relationship name="SystemHandling_to_CpReloadM">
+            <domainExtension domain="CoreMW">
+                <extension name="splitImmDn" value="true"/>
+            </domainExtension>
+            <containment>
+                <parent>
+                    <hasClass name="SystemHandling">
+                        <mimName>AxeFunctions</mimName>
+                    </hasClass>
+                </parent>
+                <child>
+                    <hasClass name="CpReloadM">
+                        <mimName>AxeCpReload</mimName>
+                    </hasClass>
+                    <cardinality>
+                        <min>1</min>
+                        <max>1</max>
+                    </cardinality>
+                </child>
+                <domainExtension domain="ECIM">
+                    <extension name="canCreate" value="false"/>
+                    <extension name="canDelete" value="false"/>
+                </domainExtension>
+                <notCreatable/>
+                <notDeleteable/>
+            </containment>
+        </relationship>
+    </interMim>
+</models>

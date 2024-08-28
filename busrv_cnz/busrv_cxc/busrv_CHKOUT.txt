@@ -1,0 +1,5 @@
+T:\Gemini_CPS\busrv_cnz\busrv_cxc\bin\cps_busrvd
+T:\Gemini_CPS\busrv_cnz\busrv_cxc\bin\bupdef
+T:\Gemini_CPS\busrv_cnz\busrv_cxc\bin\bupidls
+T:\Gemini_CPS\busrv_cnz\busrv_cxc\bin\bupls
+T:\Gemini_CPS\busrv_cnz\busrv_cxc\packages\rpm\CPS_BUSRV-CXC1372066-R1A11.x86_64.rpm
